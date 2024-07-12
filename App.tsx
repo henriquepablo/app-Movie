@@ -8,14 +8,14 @@
 import React from 'react';
 import {SafeAreaView,} from 'react-native';
 import {config} from '@gluestack-ui/config';
-import {GluestackUIProvider} from '@gluestack-ui/themed';
+import {GluestackUIProvider, StatusBar} from '@gluestack-ui/themed';
 import AppRoutes from './src/routes/AppRoutes';
 
 function App(): JSX.Element {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      
+      <StatusBar hidden={true}  />
       <GluestackUIProvider config={config}>
         <AppRoutes />
       </GluestackUIProvider>
