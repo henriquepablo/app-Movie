@@ -14,7 +14,7 @@ import AppRoutes from './src/routes/AppRoutes';
 function App(): JSX.Element {
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#0F111D'}}>
       <StatusBar hidden={true}  />
       <GluestackUIProvider config={config}>
         <AppRoutes />

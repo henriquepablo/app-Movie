@@ -23,15 +23,11 @@ function AppRoutes(): JSX.Element {
                         borderRadius: 20,
                         alignSelf: 'center',
                         marginBottom: 15,
+                        paddingTop: 5,
                         paddingBottom: 5,
-                        position: 'absolute',
-                        left: 'auto',
-                        right: 'auto',
-                        elevation: 8, 
-                        shadowColor: '#000', 
-                        shadowOffset: { width: 0, height: 2 }, 
-                        shadowOpacity: 0.25, 
-                        shadowRadius: 3.84
+                        marginTop: 10,
+                        elevation: 0,
+                        borderTopColor: '#292B37' 
                     },
 
                     tabBarLabelStyle: {
