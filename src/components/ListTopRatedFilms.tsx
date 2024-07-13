@@ -11,7 +11,7 @@ type props = {
 
 function ListTopRatedFilms({pathImage, name, vote_average, id}:props):JSX.Element {
     return(
-        <Box borderRadius={10} backgroundColor="#292B37" width={200} height={370} ml={20} >
+        <Box borderRadius={10} backgroundColor="#292B37" width={200} height={390} ml={20} >
             
             <TouchableOpacity activeOpacity={0.5} >
             
