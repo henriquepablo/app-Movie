@@ -82,7 +82,7 @@ function AppRoutes(): JSX.Element {
                     }
                 }
             >
-                <Stack.Screen name='Home' component={HomeTabs} />
+                <Stack.Screen name='HomePage' component={HomeTabs} />
                 <Stack.Screen name='PageSelected' component={PageSelected} />
             </Stack.Navigator>
         </NavigationContainer>
