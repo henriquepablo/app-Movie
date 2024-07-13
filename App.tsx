@@ -10,15 +10,19 @@ import {SafeAreaView,} from 'react-native';
 import {config} from '@gluestack-ui/config';
 import {GluestackUIProvider, StatusBar} from '@gluestack-ui/themed';
 import AppRoutes from './src/routes/AppRoutes';
+import { Provider } from 'react-redux';
+import Store from './src/Redux/Store';
 
 function App(): JSX.Element {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#0F111D'}}>
-      <StatusBar hidden={true}  />
-      <GluestackUIProvider config={config}>
-        <AppRoutes />
-      </GluestackUIProvider>
+      <Provider store={Store}>
+        <StatusBar hidden={true}  />
+          <GluestackUIProvider config={config}>
+            <AppRoutes />
+          </GluestackUIProvider>
+       </Provider>
     </SafeAreaView>
   );
 }
