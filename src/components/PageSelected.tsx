@@ -1,10 +1,12 @@
-import { ArrowLeftIcon, Box, Center, Heading, HStack, Icon, Image, Text, ScrollView, StarIcon, PlayIcon} from "@gluestack-ui/themed";
+import { ArrowLeftIcon, Box, Center, Heading, HStack, Icon, Image, Text, ScrollView, StarIcon, PlayIcon, StatusBar, Actionsheet, ActionsheetContent, ActionsheetDragIndicator} from "@gluestack-ui/themed";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, TouchableOpacity } from "react-native";
 import { useNavigation} from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import api from "../services/api";
 import { FavouriteIcon } from "@gluestack-ui/themed";
+import { WebView } from 'react-native-webview';
+import { CloseCircleIcon } from "@gluestack-ui/themed";
 
 
 function PageSelected():JSX.Element {
@@ -15,12 +17,13 @@ function PageSelected():JSX.Element {
     const [details, setDetails] = useState(null);
     const [favorite, setFavorite] = useState(false);
     const [genres, setGenres] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
 
     const navigation = useNavigation();
 
     useEffect(() => {
         async function loadDetails() {
-            const response = await api.get(`movie/${film}?language=pt-BR`)
+            const response = await api.get(`movie/${film}?language=pt-BR&append_to_response=videos`)
             .then(response => {
                 setDetails(response.data);
                 setGenres(response.data.genres);
@@ -79,7 +82,7 @@ function PageSelected():JSX.Element {
                         
                     </Box>
                 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setOpenModal(true)}>
                         <Center>
                             <Box width={330} borderRadius={20} bg="#292B37" h={60} mt={15} mb={15} alignItems="center" justifyContent="center">
                                 <HStack alignItems="center" space="md">
@@ -92,6 +95,23 @@ function PageSelected():JSX.Element {
                         </Center>
                     </TouchableOpacity>
                 </Box>
+
+                <Actionsheet isOpen={openModal} onClose={() => setOpenModal(false)}>
+                    <ActionsheetContent backgroundColor="#0F111D" >
+                        
+                        <ActionsheetDragIndicator />
+                        
+                        <Box h={480} width="$full" >
+                            <WebView source={{uri: `https://www.youtube.com/embed/${details.videos.results[0].key}`}}  />
+                        </Box>
+
+                        <TouchableOpacity onPress={() => setOpenModal(false)} >
+                            <Box mt={20} mb={10} >
+                                <Icon as={CloseCircleIcon} size="xl" color="#fff" w={400}/>
+                            </Box>
+                        </TouchableOpacity>
+                    </ActionsheetContent>
+                </Actionsheet>
             </ScrollView>
         );
 
