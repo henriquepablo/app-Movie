@@ -17,6 +17,7 @@
     "@legendapp/motion": "latest",
     "@react-navigation/bottom-tabs": "^6.6.0",
     "@react-navigation/native": "^6.1.17",
+    "axios": "^1.7.2",
     "lucide-react-native": "^0.408.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
