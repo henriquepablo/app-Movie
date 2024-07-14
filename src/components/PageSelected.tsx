@@ -20,13 +20,19 @@ function PageSelected():JSX.Element {
     const [favorite, setFavorite] = useState(false);
     const [genres, setGenres] = useState([]);
     const [openModal, setOpenModal] = useState(false);
+    const [linkVideos, setLinkVideos] = useState();
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function loadDetails() {
-            const response = await api.get(`movie/${film}?language=pt-BR&append_to_response=videos`)
+            const reponseVideo = await api.get(`movie/${film}/videos`)
+            .then(responseVideo => {
+                setLinkVideos(responseVideo.data.results[0].key);
+            });
+
+            const response = await api.get(`movie/${film}?language=pt-BR`)
             .then(response => {
                 setDetails(response.data);
                 setGenres(response.data.genres);
@@ -109,7 +115,7 @@ function PageSelected():JSX.Element {
                         <ActionsheetDragIndicator />
                         
                         <Box h={480} width="$full" >
-                            <WebView source={{uri: `https://www.youtube.com/embed/${details.videos.results[0].key}`}}  />
+                            <WebView source={{uri: `https://www.youtube.com/embed/${linkVideos}`}}  />
                         </Box>
 
                         <TouchableOpacity onPress={() => setOpenModal(false)} >
