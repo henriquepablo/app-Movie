@@ -1,12 +1,14 @@
+// @ts-nocheck
 import { ArrowLeftIcon, Box, Center, Heading, HStack, Icon, Image, Text, ScrollView, StarIcon, PlayIcon, StatusBar, Actionsheet, ActionsheetContent, ActionsheetDragIndicator} from "@gluestack-ui/themed";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, TouchableOpacity } from "react-native";
 import { useNavigation} from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import api from "../services/api";
 import { FavouriteIcon } from "@gluestack-ui/themed";
 import { WebView } from 'react-native-webview';
 import { CloseCircleIcon } from "@gluestack-ui/themed";
+import { addInList, isFavorited } from "../Redux/Reducers/favorites";
 
 
 function PageSelected():JSX.Element {
@@ -20,6 +22,7 @@ function PageSelected():JSX.Element {
     const [openModal, setOpenModal] = useState(false);
 
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         async function loadDetails() {
@@ -64,7 +67,11 @@ function PageSelected():JSX.Element {
                                 {details.title}
                             </Heading>
 
-                            <TouchableOpacity onPress={()=> setFavorite(!favorite)}>
+                            <TouchableOpacity onPress={()=> {
+                                setFavorite(!favorite)
+                                dispatch(isFavorited(!favorite));
+                                dispatch(addInList(details.poster_path, details.title));
+                            }}>
                                 <Icon as={FavouriteIcon} color={favorite ? "#ff024e" : "#fff"} size="xl" />
                             </TouchableOpacity>
                         </HStack>
