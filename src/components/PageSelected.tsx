@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ArrowLeftIcon, Box, Center, Heading, HStack, Icon, Image, Text, ScrollView, StarIcon, PlayIcon, StatusBar, Actionsheet, ActionsheetContent, ActionsheetDragIndicator} from "@gluestack-ui/themed";
+import { ArrowLeftIcon, Box, Center, Heading, HStack, Icon, Image, Text, ScrollView, StarIcon, PlayIcon, StatusBar, Actionsheet, ActionsheetContent, ActionsheetDragIndicator, FlatList} from "@gluestack-ui/themed";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, TouchableOpacity } from "react-native";
 import { useNavigation} from "@react-navigation/native";
@@ -9,6 +9,7 @@ import { FavouriteIcon } from "@gluestack-ui/themed";
 import { WebView } from 'react-native-webview';
 import { CloseCircleIcon } from "@gluestack-ui/themed";
 import { addInList, isFavorited } from "../Redux/Reducers/favorites";
+import ListTopRatedFilms from "./ListTopRatedFilms";
 
 
 function PageSelected():JSX.Element {
@@ -22,6 +23,7 @@ function PageSelected():JSX.Element {
     const [genres, setGenres] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [linkVideos, setLinkVideos] = useState();
+    const [Recomendations, setRecomendations] = useState([]);
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -44,11 +46,20 @@ function PageSelected():JSX.Element {
             })  
             .catch(err => console.log(err));
         }
-        loadDetails();
 
+        async function loadRecommendationsFilm() {
+            const response = await api.get(`movie/${film}/recommendations?language=pt-BR`)
+            .then(response => {
+                setRecomendations(response.data.results);
+            })
+            .catch(err => console.log(err));
+        }
+
+        loadDetails();
+        loadRecommendationsFilm();
         
 
-    }, []);
+    }, [film]);
 
     if (loading) {
         return(
@@ -131,6 +142,23 @@ function PageSelected():JSX.Element {
                         </TouchableOpacity>
                     </ActionsheetContent>
                 </Actionsheet>
+
+                <Box ml={20} mt={20} height="$full">
+                    <Heading color="#fff" fontSize={23}>
+                        Filmes Recomendados
+                    </Heading>
+                    
+                    <Box mt={20} mb={20}>
+                        <FlatList 
+                            data={Recomendations}
+                            keyExtractor={(item:any) => item.id}
+                            renderItem={({item}:any) => <ListTopRatedFilms pathImage={item.poster_path} name={item.title} vote_average={item.vote_average} id={item.id}/>}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            mr={20}
+                        />
+                    </Box>
+                </Box>
             </ScrollView>
         );
 
