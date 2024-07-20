@@ -14,6 +14,7 @@ import { addInList, isFavorited } from "../Redux/Reducers/favorites";
 function PageSelected():JSX.Element {
 
     const film = useSelector((state:any) => state.Id_Film.value);
+    const list: any[] = useSelector((state:any) => state.SelectedFavorites);
 
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState(null);
@@ -37,10 +38,15 @@ function PageSelected():JSX.Element {
                 setDetails(response.data);
                 setGenres(response.data.genres);
                 setLoading(false);
+                list.forEach((item) => {
+                    if(item.name === response.data.title) setFavorite(true);
+                });
             })  
             .catch(err => console.log(err));
         }
         loadDetails();
+
+        
 
     }, []);
 
