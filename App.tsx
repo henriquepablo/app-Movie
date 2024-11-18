@@ -18,7 +18,6 @@ function App(): JSX.Element {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#0F111D'}}>
       <Provider store={Store}>
-        <StatusBar hidden={true}  />
           <GluestackUIProvider config={config}>
             <AppRoutes />
           </GluestackUIProvider>

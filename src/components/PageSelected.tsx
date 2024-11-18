@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { ArrowLeftIcon, Box, Center, Heading, HStack, Icon, Image, Text, ScrollView, StarIcon, PlayIcon, StatusBar, Actionsheet, ActionsheetContent, ActionsheetDragIndicator, FlatList} from "@gluestack-ui/themed";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Alert, Linking, Modal, TouchableOpacity, View } from "react-native";
 import { useNavigation} from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../services/api";
@@ -10,6 +10,7 @@ import { WebView } from 'react-native-webview';
 import { CloseCircleIcon } from "@gluestack-ui/themed";
 import { addInList, isFavorited } from "../Redux/Reducers/favorites";
 import ListTopRatedFilms from "./ListTopRatedFilms";
+import { CircleX } from "lucide-react-native";
 
 
 function PageSelected():JSX.Element {
@@ -126,22 +127,28 @@ function PageSelected():JSX.Element {
                     </TouchableOpacity>
                 </Box>
 
-                <Actionsheet isOpen={openModal} onClose={() => setOpenModal(false)}>
-                    <ActionsheetContent backgroundColor="#0F111D" >
-                        
-                        <ActionsheetDragIndicator />
-                        
-                        <Box h={480} width="$full" >
-                            <WebView source={{uri: `https://www.youtube.com/embed/${linkVideos}`}}  />
-                        </Box>
+                <Modal visible={openModal} animationType="slide">
+
+                    <Box style={{flex: 1, backgroundColor: '#0F111D'}}>
 
                         <TouchableOpacity onPress={() => setOpenModal(false)} >
-                            <Box mt={20} mb={10} >
-                                <Icon as={CloseCircleIcon} size="xl" color="#fff" w={400}/>
-                            </Box>
+                            
+                            <View style={{marginTop: 50, marginLeft: 30, width: 50, height: 50}} >
+                                <CircleX color="#fff" size={32}/>
+                            </View>
+                        
                         </TouchableOpacity>
-                    </ActionsheetContent>
-                </Actionsheet>
+
+
+                        <TouchableOpacity onPress={() => Linking.openURL(`https://embedder.net/e/${film}`)}>
+                            <Text color="#fff" textAlign="center" fontSize={24}>
+                                {details.title}
+                            </Text>
+                        </TouchableOpacity>
+                        
+
+                    </Box>
+                </Modal>
 
                 <Box ml={20} mt={20} height="$full">
                     <Heading color="#fff" fontSize={23}>
